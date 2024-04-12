@@ -230,7 +230,13 @@ class TinyGsmSim7600 : public TinyGsmModem<TinyGsmSim7600>,
     if (!testAT()) { return false; }
     sendAT(GF("+CRESET"));
     if (waitResponse(10000L) != 1) { return false; }
-    delay(5000L);  // TODO(?):  Test this delay!
+    // After booting, modem sends out messages as each of its
+    // internal modules loads.  The final message is "PB DONE".
+    if (waitResponse(60000L, GF(GSM_NL "PB DONE")) != 1) {
+      DBG("### Modem PB DONE = KO");
+      return false;
+    }
+    DBG("### Modem PB DONE OK");
     return init(pin);
   }
 
