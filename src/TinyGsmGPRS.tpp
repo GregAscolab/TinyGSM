@@ -114,10 +114,11 @@ class TinyGsmGPRS {
   // Asks for International Mobile Subscriber Identity IMSI via the AT+CIMI
   // command
   String getIMSIImpl() {
+    String resp;
     thisModem().sendAT(GF("+CIMI"));
-    thisModem().streamSkipUntil('\n');  // skip first newline
-    String res = thisModem().stream.readStringUntil('\n');
-    thisModem().waitResponse();
+    thisModem().waitResponse(10000L, resp); // Need to use waitResponse to manage all other kind of answers that could be sent by ME (+CIPRXGET...)
+    resp.remove(0, resp.indexOf('\n')+1); // Remove first "line" ...
+    String res = resp.substring(0, resp.indexOf('\n')); // ...and get only the second
     res.trim();
     return res;
   }
