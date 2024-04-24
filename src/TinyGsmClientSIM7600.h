@@ -614,7 +614,7 @@ class TinyGsmSim7600 : public TinyGsmModem<TinyGsmSim7600>,
   bool isGprsConnectedImpl() {
     sendAT(GF("+NETOPEN?"));
     // May return +NETOPEN: 1, 0.  We just confirm that the first number is 1
-    if (waitResponse(GF(GSM_NL "+NETOPEN: 1")) != 1) { return false; }
+    if (waitResponse(GF(GSM_NL "+NETOPEN: 1"), GF(GSM_NL "+NETOPEN: 0")) != 1) { return false; }
     waitResponse();
 
     sendAT(GF("+IPADDR"));  // Inquire Socket PDP address
