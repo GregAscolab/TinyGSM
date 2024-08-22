@@ -212,7 +212,7 @@ class TinyGsmSim7600 : public TinyGsmModem<TinyGsmSim7600>,
       DBG("### Modem PB DONE = KO");
       return false;
     }
-    DBG("### Modem PB DONE OK");
+    DBG("### Modem PB DONE = OK");
     return init(pin);
   }
 
@@ -789,7 +789,7 @@ class TinyGsmSim7600 : public TinyGsmModem<TinyGsmSim7600>,
       // Need to close all open sockets and release the network library.
       // User will then need to reconnect.
       DBG("### Network error!");
-      if (!isGprsConnected()) { gprsDisconnect(); }
+      if (isGprsConnected()) { gprsDisconnect(); }
       data = "";
       return true;
     }
